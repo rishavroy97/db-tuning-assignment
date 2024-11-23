@@ -1,14 +1,7 @@
 import mariadb
 import pandas as pd
 import sys
-
-db_config = {
-    "host": "localhost",
-    "user": "your_username",
-    "password": "your_password",
-    "database": "your_database",
-    "unix_socket": "/path/to/socket"
-}
+from ..config import db_config
 
 def get_connection():
     try:

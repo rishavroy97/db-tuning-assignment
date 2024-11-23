@@ -1,14 +1,7 @@
 import mariadb
 import pandas as pd
 import random
-
-db_config = {
-    "host": "localhost",
-    "user": "your_username",
-    "password": "your_password",
-    "database": "your_database",
-    "unix_socket": ""
-}
+from ..config import db_config
 
 TOTAL_ROWS = 1000000
 BATCH_SIZE = 1000
