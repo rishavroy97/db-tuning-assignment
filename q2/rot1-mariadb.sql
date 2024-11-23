@@ -41,3 +41,5 @@ CREATE INDEX idx_status ON users(status);
 SET profiling = 1;
 SELECT * FROM users WHERE status = 'inactive';
 SHOW PROFILES;
+
+-- Conclusion: Non-clustered index is faster
