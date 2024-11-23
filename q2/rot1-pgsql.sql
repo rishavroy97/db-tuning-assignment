@@ -8,23 +8,23 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-COPY users(name, email, status)
-    FROM '/home/rr4577/ads/db-tuning-assignment/q2/users_uneven.csv'
-    DELIMITER ','
-    CSV HEADER;
-
 -- RULE OF THUMB:
 -- if you have very few distinct values in a column of a big table, 
 -- then, creating a non-clustered index to that column is not-efective.
 -- (Gives similar performance as scanning without any index)
 
+COPY users(name, email, status)
+    FROM '/home/rr4577/ads/db-tuning-assignment/q2/users_even.csv'
+    DELIMITER ','
+    CSV HEADER;
+
 -- success
--- without index (88.531 ms)
+-- without index (522.729 ms)
 \timing on
 \pset pager off
 SELECT * FROM users WHERE status = 'inactive';
 
--- with index (19.418 ms)
+-- with index (596.234 ms)
 \timing on
 \pset pager off
 CREATE INDEX idx_status ON users(status);
@@ -38,13 +38,20 @@ SELECT * FROM users WHERE status = 'inactive';
 -- where one of the values is very rare and query searches for this rare value
 -- In that case, it helps to have a non-clustered index
 
--- without index (88.531 ms)
+DELETE FROM users;
+
+COPY users(name, email, status)
+    FROM '/home/rr4577/ads/db-tuning-assignment/q2/users_uneven.csv'
+    DELIMITER ','
+    CSV HEADER;
+
+-- without index (91.725 ms)
 \timing on
 \pset pager off
 SELECT * FROM users WHERE status = 'inactive';
 
 
--- with index (19.418 ms)
+-- with index (19.000 ms)
 \timing on
 \pset pager off
 CREATE INDEX idx_status ON users(status);
