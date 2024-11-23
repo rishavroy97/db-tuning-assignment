@@ -28,7 +28,7 @@ def insert_users():
 
         for batch_start in range(0, TOTAL_ROWS, BATCH_SIZE):
             
-            batch_data = generate_random_users(BATCH_SIZE)
+            batch_data = generate_random_users(batch_start, BATCH_SIZE)
 
             cursor.executemany(
                 "INSERT INTO users (name, email, status) VALUES (?, ?, ?)",
