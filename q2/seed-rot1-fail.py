@@ -1,5 +1,4 @@
 import mariadb
-import pandas as pd
 import random
 import sys
 from config import db_config
