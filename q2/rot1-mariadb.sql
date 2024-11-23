@@ -30,6 +30,7 @@ SHOW PROFILES;
 
 -- Conclusion: Comparable speeds
 
+DROP INDEX idx_status ON users;
 DELETE FROM users;
 
 LOAD DATA INFILE '/home/rr4577/ads/db-tuning-assignment/q2/users_uneven.csv'

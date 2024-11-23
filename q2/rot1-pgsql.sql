@@ -38,6 +38,7 @@ SELECT * FROM users WHERE status = 'inactive';
 -- where one of the values is very rare and query searches for this rare value
 -- In that case, it helps to have a non-clustered index
 
+DROP INDEX idx_status;
 DELETE FROM users;
 
 COPY users(name, email, status)
