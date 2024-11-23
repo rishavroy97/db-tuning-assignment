@@ -7,7 +7,7 @@ def generate_data(file_path):
     data = {
         "name": [f"User{i}" for i in range(1, NUM_ROWS + 1)],
         "email": [f"user{i}@example.com" for i in range(1, NUM_ROWS + 1)],
-        "status": random.choice(['active', 'inactive', 'pending'], k=NUM_ROWS)
+        "status": [random.choice(['active', 'inactive', 'pending']) for i in range(1, NUM_ROWS + 1)]
     }
     
     df = pd.DataFrame(data)
