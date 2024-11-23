@@ -7,16 +7,6 @@ from config import db_config
 TOTAL_ROWS = 1000000
 BATCH_SIZE = 1000
 
-def get_connection():
-    try:
-        connection = mariadb.connect(**db_config)
-        print("Connected to MariaDB!!")
-    except mariadb.Error as e:
-        print(f"Error connecting to MariaDB: {e}")
-        sys.exit(1)
-    
-    return connection
-
 def generate_user_dataframe(start_id, num_rows):
     data = {
         "name": [f"User{i}" for i in range(start_id, start_id + num_rows)],
