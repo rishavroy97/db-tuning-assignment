@@ -6,7 +6,7 @@ NUM_ROWS = 1000000
 
 def generate_data(file_path):
     data = {
-        "customer_id": [random.rand(1, 500) for _ in range(NUM_ROWS)],
+        "customer_id": [random.randint(1, 500) for _ in range(NUM_ROWS)],
         "order_date": [(datetime.today() - timedelta(days=random.randint(0, 3650))) for _ in range(NUM_ROWS)],
         "order_amount": [round(random.uniform(10, 1000), 2) for _ in range(NUM_ROWS)]
     }
