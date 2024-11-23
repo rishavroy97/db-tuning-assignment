@@ -14,5 +14,5 @@ def generate_data(file_path):
     df.to_csv(file_path, index=False)
 
 if __name__ == "__main__":
-    csv_file_path = "users_uneven.csv"
+    csv_file_path = "users_even.csv"
     generate_data(csv_file_path)
