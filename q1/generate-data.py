@@ -11,14 +11,14 @@ PRICE_VARIATION_MIN = 1
 PRICE_VARIATION_MAX = 5
 
 def get_next_price(curr_price: int) -> int:
-    variation = random.uniform(PRICE_VARIATION_MIN, PRICE_VARIATION_MAX)
+    variation = int(random.uniform(PRICE_VARIATION_MIN, PRICE_VARIATION_MAX))
     new_price = curr_price + random.choice([-variation, variation])
     return max(PRICE_MIN, min(PRICE_MAX, new_price))
 
 def generate_trade_data():
     stock_symbols = fractal.gen()
 
-    stock_prices = {symbol: random.uniform(PRICE_MIN, PRICE_MAX) for symbol in set(stock_symbols)}
+    stock_prices = {symbol: int(random.uniform(PRICE_MIN, PRICE_MAX)) for symbol in set(stock_symbols)}
 
     trades = []
     # Table trade(stocksymbol, time, quantity, price)

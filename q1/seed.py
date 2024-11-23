@@ -2,32 +2,23 @@ import mariadb
 import pandas as pd
 import sys
 
+db_config = {
+    "host": "localhost",
+    "user": "your_username",
+    "password": "your_password",
+    "database": "your_database",
+    "unix_socket": "/path/to/socket"
+}
+
 def get_connection():
     try:
-        connection = mariadb.connect(
-            user="",
-            password="",
-            host="localhost",
-            port="",
-            unix_socket=""
-        )
+        connection = mariadb.connect(**db_config)
         print("Connected to MariaDB!!")
     except mariadb.Error as e:
         print(f"Error connecting to MariaDB: {e}")
         sys.exit(1)
     
     return connection
-
-def create_db(cursor):
-    db_create_query = "CREATE DATABASE IF NOT EXISTS trades_db;"
-    db_use_query = " USE trades_db;"
-    
-    try:
-        cursor.execute(db_create_query)
-        cursor.execute(db_use_query)
-    except mariadb.Error as e:
-        print(f"Error creating DB: {e}")
-        sys.exit(1)
 
 def create_table(cursor, table_name):
     try:
@@ -48,8 +39,7 @@ def load_csv_to_db(df, table_name):
 
     connection = get_connection()
     cursor = connection.cursor()
-    
-    create_db(cursor)
+
     create_table(cursor, table_name)
     
     insert_query = f"""
@@ -65,7 +55,6 @@ def load_csv_to_db(df, table_name):
         print(f"Inserted {len(records)} rows into the table {table_name}.")
     except mariadb.Error as e:
         print(f"Error occurred while inserting records: {e}")
-        connection.rollback()
     finally:
         cursor.close()
         connection.close()
