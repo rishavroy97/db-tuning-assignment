@@ -1,10 +1,21 @@
 import mariadb
 import pandas as pd
 import random
+import sys
 from config import db_config
 
 TOTAL_ROWS = 1000000
 BATCH_SIZE = 1000
+
+def get_connection():
+    try:
+        connection = mariadb.connect(**db_config)
+        print("Connected to MariaDB!!")
+    except mariadb.Error as e:
+        print(f"Error connecting to MariaDB: {e}")
+        sys.exit(1)
+    
+    return connection
 
 def generate_user_dataframe(start_id, num_rows):
     data = {
@@ -37,11 +48,12 @@ def insert_dataframe_in_batches():
             print(f"Inserted batch starting at row {batch_start}")
 
         print("All data inserted successfully.")
+        cursor.close()
+        conn.close()
+
     except mariadb.Error as e:
         print(f"Error: {e}")
-    finally:
-        if conn:
-            conn.close()
+        sys.exit(1)
 
 if __name__ == "__main__":
     insert_dataframe_in_batches()
