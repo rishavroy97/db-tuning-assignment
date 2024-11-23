@@ -1,5 +1,5 @@
 CREATE TABLE orders (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     customer_id INT,
     order_date DATE,
     order_amount NUMERIC(10, 2)
@@ -10,24 +10,24 @@ CREATE TABLE orders (
 -- improves performance when compared to a Non-clustered index
 -- This is because all the records will probably be on the same page.
 
-COPY orders(customer_id, order_date, order_amount)
-    FROM '/home/rr4577/ads/db-tuning-assignment/q2/orders.csv'
-    DELIMITER ','
-    CSV HEADER;
+LOAD DATA INFILE '/home/rr4577/ads/db-tuning-assignment/q2/orders.csv'
+INTO TABLE orders
+FIELDS TERMINATED BY ','
+IGNORE 1 LINES
+(customer_id, order_date, order_amount);
 
 CREATE INDEX customer_idx ON orders (customer_id);
 
 -- non-clustered index (147.914 ms)
-\timing on
-\pset pager off
+SET profiling = 1;
 SELECT * FROM orders WHERE customer_id BETWEEN 20 AND 50;
-
+SHOW PROFILES;
 
 -- clustered index (66.661 ms)
-\timing on
-\pset pager off
+DROP INDEX customer_idx ON orders;
 
-CLUSTER orders USING customer_idx; -- 5720.270 ms
+ALTER TABLE orders DROP PRIMARY KEY;
+ALTER TABLE orders ADD PRIMARY KEY (customer_id);
 
 SELECT * FROM orders WHERE customer_id BETWEEN 20 AND 50;
 
