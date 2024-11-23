@@ -1,7 +1,7 @@
 import mariadb
 import pandas as pd
 import random
-from ..config import db_config
+from config import db_config
 
 TOTAL_ROWS = 1000000
 BATCH_SIZE = 1000

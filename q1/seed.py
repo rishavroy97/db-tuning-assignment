@@ -1,7 +1,7 @@
 import mariadb
 import pandas as pd
 import sys
-from ..config import db_config
+from config import db_config
 
 def get_connection():
     try:
