@@ -1,24 +1,67 @@
+-- PART 1
+
 CREATE TABLE IF NOT EXISTS trade(stocksymbol INT, time INT PRIMARY KEY, quantity INT, price INT);
 exec;
 
 stats on;
+
+LOAD DATA INFILE "/home/rr4577/ads/db-tuning-assignment/q1/trades.csv" INTO TABLE trade FIELDS TERMINATED BY ",";
 exec;
 
-LOAD DATA INFILE "./data/trades.csv" INTO TABLE trade FIELDS TERMINATED BY ",";
-exec;
-
--- 1.02 seconds
+-- 2.883 seconds
 SELECT stocksymbol, SUM(quantity * price) / SUM(quantity) AS weighted_avg_price FROM trade GROUP BY stocksymbol;
 exec;
 
--- 85 seconds
+
+-- PART 2
+
+-- Restart AQuery and reload Data
+
+CREATE TABLE IF NOT EXISTS trade(stocksymbol INT, time INT PRIMARY KEY, quantity INT, price INT);
+exec;
+
+stats on;
+
+LOAD DATA INFILE "/home/rr4577/ads/db-tuning-assignment/q1/trades.csv" INTO TABLE trade FIELDS TERMINATED BY ",";
+exec;
+
+-- 112.28 seconds
 SELECT stocksymbol, price, avgs(10, price) AS moving_avg_price FROM trade ASSUMING ASC stocksymbol, ASC time;
 exec;
 
--- 85.83 seconds
+
+
+-- PART 3
+
+-- Restart AQuery and reload Data
+
+CREATE TABLE IF NOT EXISTS trade(stocksymbol INT, time INT PRIMARY KEY, quantity INT, price INT);
+exec;
+
+stats on;
+
+LOAD DATA INFILE "/home/rr4577/ads/db-tuning-assignment/q1/trades.csv" INTO TABLE trade FIELDS TERMINATED BY ",";
+exec;
+
+-- 117.605 seconds
 SELECT stocksymbol, price, sums(10, price * quantity) / sums(10, quantity) AS weighted_moving_avg_price FROM trade ASSUMING ASC stocksymbol, ASC time;
 exec;
 
--- 4.3 seconds
+
+
+
+-- PART 4
+
+-- Restart AQuery and reload Data
+
+CREATE TABLE IF NOT EXISTS trade(stocksymbol INT, time INT PRIMARY KEY, quantity INT, price INT);
+exec;
+
+stats on;
+
+LOAD DATA INFILE "/home/rr4577/ads/db-tuning-assignment/q1/trades.csv" INTO TABLE trade FIELDS TERMINATED BY ",";
+exec;
+
+-- 7.7 seconds
 SELECT stocksymbol, max(price - mins(price)) AS max_profit FROM trade ASSUMING ASC stocksymbol, ASC time GROUP BY stocksymbol;
 exec;
