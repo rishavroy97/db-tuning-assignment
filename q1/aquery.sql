@@ -1,6 +1,6 @@
 -- PART 1
 
-CREATE TABLE IF NOT EXISTS trade(stocksymbol INT, time INT PRIMARY KEY, quantity INT, price INT);
+CREATE TABLE IF NOT EXISTS trade(stocksymbol INT, time INT, quantity INT, price INT);
 exec;
 
 stats on;
@@ -8,7 +8,7 @@ stats on;
 LOAD DATA INFILE "/home/rr4577/ads/db-tuning-assignment/q1/trades.csv" INTO TABLE trade FIELDS TERMINATED BY ",";
 exec;
 
--- 2.883 seconds
+-- 2.7 seconds
 SELECT stocksymbol, SUM(quantity * price) / SUM(quantity) AS weighted_avg_price FROM trade GROUP BY stocksymbol;
 exec;
 
@@ -17,7 +17,7 @@ exec;
 
 -- Restart AQuery and reload Data
 
-CREATE TABLE IF NOT EXISTS trade(stocksymbol INT, time INT PRIMARY KEY, quantity INT, price INT);
+CREATE TABLE IF NOT EXISTS trade(stocksymbol INT, time INT, quantity INT, price INT);
 exec;
 
 stats on;
@@ -25,7 +25,7 @@ stats on;
 LOAD DATA INFILE "/home/rr4577/ads/db-tuning-assignment/q1/trades.csv" INTO TABLE trade FIELDS TERMINATED BY ",";
 exec;
 
--- 112.28 seconds
+-- 114.7 seconds
 SELECT stocksymbol, price, avgs(10, price) AS moving_avg_price FROM trade ASSUMING ASC stocksymbol, ASC time;
 exec;
 
@@ -35,7 +35,7 @@ exec;
 
 -- Restart AQuery and reload Data
 
-CREATE TABLE IF NOT EXISTS trade(stocksymbol INT, time INT PRIMARY KEY, quantity INT, price INT);
+CREATE TABLE IF NOT EXISTS trade(stocksymbol INT, time INT, quantity INT, price INT);
 exec;
 
 stats on;
@@ -43,7 +43,7 @@ stats on;
 LOAD DATA INFILE "/home/rr4577/ads/db-tuning-assignment/q1/trades.csv" INTO TABLE trade FIELDS TERMINATED BY ",";
 exec;
 
--- 117.605 seconds
+-- 108.9 seconds
 SELECT stocksymbol, price, sums(10, price * quantity) / sums(10, quantity) AS weighted_moving_avg_price FROM trade ASSUMING ASC stocksymbol, ASC time;
 exec;
 
@@ -54,7 +54,7 @@ exec;
 
 -- Restart AQuery and reload Data
 
-CREATE TABLE IF NOT EXISTS trade(stocksymbol INT, time INT PRIMARY KEY, quantity INT, price INT);
+CREATE TABLE IF NOT EXISTS trade(stocksymbol INT, time INT, quantity INT, price INT);
 exec;
 
 stats on;
@@ -62,6 +62,6 @@ stats on;
 LOAD DATA INFILE "/home/rr4577/ads/db-tuning-assignment/q1/trades.csv" INTO TABLE trade FIELDS TERMINATED BY ",";
 exec;
 
--- 7.7 seconds
+-- 7.6 seconds
 SELECT stocksymbol, max(price - mins(price)) AS max_profit FROM trade ASSUMING ASC stocksymbol, ASC time GROUP BY stocksymbol;
 exec;
